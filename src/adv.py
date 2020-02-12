@@ -1,4 +1,6 @@
+import textwrap
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -38,14 +40,62 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
+player_one = Player('Ready Player', 'outside')
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
+
+
+def print_room_details(room_label):
+    print(room[room_label].name)
+    text_to_wrap = textwrap.wrap(room[room_label].description, 40)
+    for text in text_to_wrap:
+        print(text)
+
+
+for key in room:
+    if key == player_one.current_room:
+        print_room_details(key)
+
+    user_input = ''
+
+    while not user_input:
+        user_input = input(
+            'Where thou moveth to?\n[n] - north\n[s] - south\n[e] - east\n[w] - west\n')
+        if user_input == 'q':
+            quit()
+        elif player_one.current_room == 'outside' and user_input == 'n':
+            print_room_details('foyer')
+            player_one.current_room = 'foyer'
+        elif player_one.current_room == 'foyer' and user_input == 's':
+            print_room_details('outside')
+            player_one.current_room = 'outside'
+        elif player_one.current_room == 'foyer' and user_input == 'n':
+            print_room_details('overlook')
+            player_one.current_room = 'overlook'
+        elif player_one.current_room == 'foyer' and user_input == 'e':
+            print_room_details('narrow')
+            player_one.current_room = 'narrow'
+        elif player_one.current_room == 'overlook' and user_input == 's':
+            print_room_details('foyer')
+            player_one.current_room = 'foyer'
+        elif player_one.current_room == 'narrow' and user_input == 'w':
+            print_room_details('foyer')
+            player_one.current_room = 'foyer'
+        elif player_one.current_room == 'narrow' and user_input == 'n':
+            print_room_details('treasure')
+            player_one.current_room = 'treasure'
+        elif player_one.current_room == 'treasure' and user_input == 's':
+            print_room_details('narrow')
+            player_one.current_room = 'narrow'
+        else:
+            print('Direction not allowed. Press [n], [s], [e] or [w] keys')
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
+
 #
 # If the user enters "q", quit the game.
