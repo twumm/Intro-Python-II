@@ -50,10 +50,22 @@ player_one = Player('Ready Player', 'outside')
 
 
 def print_room_details(room_label):
-    print(room[room_label].name)
+    print('Location: ' + room[room_label].name)
     text_to_wrap = textwrap.wrap(room[room_label].description, 40)
+    print('Description: ')
     for text in text_to_wrap:
         print(text)
+    
+def set_travel_direction(direction):
+    direction_selected = f'{direction}_to'
+    if getattr(room[player_one.current_room], direction_selected) != '':
+        next_room = getattr(room[player_one.current_room], direction_selected)
+        player_one.current_room = list(room.keys())[
+            list(room.values()).index(next_room)]
+        print_room_details(player_one.current_room)
+    else:
+        print(f"You can't go in direction {direction}. Try the other 3 options")
+
 
 
 for key in room:
@@ -67,30 +79,32 @@ for key in room:
             'Where thou moveth to?\n[n] - north\n[s] - south\n[e] - east\n[w] - west\n')
         if user_input == 'q':
             quit()
-        elif player_one.current_room == 'outside' and user_input == 'n':
-            print_room_details('foyer')
-            player_one.current_room = 'foyer'
-        elif player_one.current_room == 'foyer' and user_input == 's':
-            print_room_details('outside')
-            player_one.current_room = 'outside'
-        elif player_one.current_room == 'foyer' and user_input == 'n':
-            print_room_details('overlook')
-            player_one.current_room = 'overlook'
-        elif player_one.current_room == 'foyer' and user_input == 'e':
-            print_room_details('narrow')
-            player_one.current_room = 'narrow'
-        elif player_one.current_room == 'overlook' and user_input == 's':
-            print_room_details('foyer')
-            player_one.current_room = 'foyer'
-        elif player_one.current_room == 'narrow' and user_input == 'w':
-            print_room_details('foyer')
-            player_one.current_room = 'foyer'
-        elif player_one.current_room == 'narrow' and user_input == 'n':
-            print_room_details('treasure')
-            player_one.current_room = 'treasure'
-        elif player_one.current_room == 'treasure' and user_input == 's':
-            print_room_details('narrow')
-            player_one.current_room = 'narrow'
+        elif user_input in ['n', 's', 'e', 'w']:
+            set_travel_direction(user_input)
+        # elif player_one.current_room == 'outside' and user_input == 'n':
+        #     print_room_details('foyer')
+        #     player_one.current_room = 'foyer'
+        # elif player_one.current_room == 'foyer' and user_input == 's':
+        #     print_room_details('outside')
+        #     player_one.current_room = 'outside'
+        # elif player_one.current_room == 'foyer' and user_input == 'n':
+        #     print_room_details('overlook')
+        #     player_one.current_room = 'overlook'
+        # elif player_one.current_room == 'foyer' and user_input == 'e':
+        #     print_room_details('narrow')
+        #     player_one.current_room = 'narrow'
+        # elif player_one.current_room == 'overlook' and user_input == 's':
+        #     print_room_details('foyer')
+        #     player_one.current_room = 'foyer'
+        # elif player_one.current_room == 'narrow' and user_input == 'w':
+        #     print_room_details('foyer')
+        #     player_one.current_room = 'foyer'
+        # elif player_one.current_room == 'narrow' and user_input == 'n':
+        #     print_room_details('treasure')
+        #     player_one.current_room = 'treasure'
+        # elif player_one.current_room == 'treasure' and user_input == 's':
+        #     print_room_details('narrow')
+        #     player_one.current_room = 'narrow'
         else:
             print('Direction not allowed. Press [n], [s], [e] or [w] keys')
 
