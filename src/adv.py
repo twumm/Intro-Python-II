@@ -55,17 +55,28 @@ def print_room_details(room_label):
     print('Description: ')
     for text in text_to_wrap:
         print(text)
-    
+
+
 def set_travel_direction(direction):
     direction_selected = f'{direction}_to'
+    # checks to see if there is an attribute that matches what is in the method
+    # print(getattr(room[player_one.current_room], 'p'))
     if getattr(room[player_one.current_room], direction_selected) != '':
         next_room = getattr(room[player_one.current_room], direction_selected)
+        # print(next_room)
+        # print('-----------')
+        # print('...........' + list(room.keys())[
+        #     list(room.values()).index(next_room)])
+        # for key in room:
+        #     if key == player_one.current_room:
+        #         print_room_details(key)
+        print(list(room.keys())[list(room.values()).index(next_room)])
         player_one.current_room = list(room.keys())[
             list(room.values()).index(next_room)]
         print_room_details(player_one.current_room)
     else:
-        print(f"You can't go in direction {direction}. Try the other 3 options")
-
+        print(
+            f"You can't go in direction {direction}. Try the other 3 options")
 
 
 for key in room:
